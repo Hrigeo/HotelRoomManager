@@ -1,21 +1,36 @@
-﻿using HotelRoomManager.Models.Rooms;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using HotelRoomManager.Models.Finance;
+using HotelRoomManager.Models.Rooms;
 using HotelRoomManager.Models.User;
 
 namespace HotelRoomManager.Models.Bookings
 {
-        public class Booking
-        {
-            public int Id { get; set; }
+    public class Booking
+    {
+        public int Id { get; set; }
 
-            public DateTime CheckInDate { get; set; }
-            public DateTime CheckOutDate { get; set; }
+        [Required]
+        public DateTime CheckInDate { get; set; }
 
-            public int RoomId { get; set; }
-            public Room Room { get; set; } = null!;
+        [Required]
+        public DateTime CheckOutDate { get; set; }
 
-            public string GuestId { get; set; } = null!;
-            public ApplicationUser Guest { get; set; } = null!;
+        [Required]
+        public int RoomId { get; set; }
+        public Room Room { get; set; } = null!;
 
-            public string? Notes { get; set; }
-        }
+        [Required]
+        public string GuestId { get; set; } = null!;
+        public ApplicationUser Guest { get; set; } = null!;
+
+        [MaxLength(1000)]
+        public string? Notes { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        [Range(0, 100000)]
+        public decimal TotalPrice { get; set; }
+
+        public Invoice? Invoice { get; set; }
+    }
 }
