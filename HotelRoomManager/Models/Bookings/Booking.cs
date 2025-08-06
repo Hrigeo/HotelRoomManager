@@ -8,6 +8,7 @@ namespace HotelRoomManager.Models.Bookings
 {
     public class Booking
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -17,18 +18,21 @@ namespace HotelRoomManager.Models.Bookings
         public DateTime CheckOutDate { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Room))]
         public int RoomId { get; set; }
+
         public Room Room { get; set; } = null!;
 
         [Required]
+        [ForeignKey(nameof(Guest))]
         public string GuestId { get; set; } = null!;
+
         public ApplicationUser Guest { get; set; } = null!;
 
         [MaxLength(1000)]
         public string? Notes { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [Range(0, 100000)]
         public decimal TotalPrice { get; set; }
 
         public Invoice? Invoice { get; set; }

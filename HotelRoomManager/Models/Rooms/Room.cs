@@ -8,6 +8,7 @@ namespace HotelRoomManager.Models.Rooms
 {
     public class Room
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -24,13 +25,18 @@ namespace HotelRoomManager.Models.Rooms
         public decimal PricePerNight { get; set; }
 
         [Required]
+        [ForeignKey(nameof(RoomType))]
         public int RoomTypeId { get; set; }
+
         public RoomType RoomType { get; set; } = null!;
 
         [Required]
         public Availability Availability { get; set; }
 
+        [InverseProperty(nameof(Booking.Room))]
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+        [InverseProperty(nameof(RoomAmenityMapping.Room))]
         public ICollection<RoomAmenityMapping> RoomAmenityMappings { get; set; } = new List<RoomAmenityMapping>();
     }
 }

@@ -7,9 +7,11 @@ namespace HotelRoomManager.Models.Finance
 {
     public class Invoice
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Booking))]
         public int BookingId { get; set; }
 
         public Booking Booking { get; set; } = null!;
