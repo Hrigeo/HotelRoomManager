@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HotelRoomManager.Models.Bookings;
+using HotelRoomManager.Models.Reviews;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HotelRoomManager.Models.Bookings;
-using HotelRoomManager.Models.Amenities;
 using static HotelRoomManager.Emuns.Class;
 
 namespace HotelRoomManager.Models.Rooms
@@ -36,7 +36,8 @@ namespace HotelRoomManager.Models.Rooms
         [InverseProperty(nameof(Booking.Room))]
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-        [InverseProperty(nameof(RoomAmenityMapping.Room))]
-        public ICollection<RoomAmenityMapping> RoomAmenityMappings { get; set; } = new List<RoomAmenityMapping>();
+        [NotMapped]
+        public IEnumerable<RoomReview> Reviews =>
+            Bookings.Where(b => b.Review != null).Select(b => b.Review!);
     }
 }
