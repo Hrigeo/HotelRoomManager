@@ -18,6 +18,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.Password.Re
 
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

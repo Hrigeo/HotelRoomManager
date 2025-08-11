@@ -1,5 +1,72 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿@* ===================== Views/Rooms/Details.cshtml =====================
+   Purpose:
+     - Show a single room's full details to any visitor.
+     - Uses RoomDetailsViewModel, which already contains all data the view needs.
+   Notes:
+     - "Book" button is shown only when the room is Available (optional; keep or remove).
+     - Admin can still see Edit/Delete (optional; comment out if you only want the view now).
 *@
+
+@using HotelRoomManager.Models.ViewModels.Rooms
+@using HotelRoomManager.Data.Models.Rooms   @* for Availability enum *@
+@using static HotelRoomManager.Emuns.Class
+@model RoomDetailsViewModel
+
 @{
+    ViewData["Title"] = $"Room {Model.Number}";
+    // Human-friendly status text and badge color
+    Func<Availability, string> statusText = a => a == Availability.Available ? "Available" : "Not Available";
+    Func<Availability, string> badgeClass = a => a == Availability.Available ? "badge bg-success" : "badge bg-danger";
+
+    bool isAdmin = User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin");
 }
+
+<h1 class="mb-3">Room @Model.Number</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <dl class="row mb-0">
+                    <dt class="col-sm-5">Room Number</dt>
+                    <dd class="col-sm-7">@Model.Number</dd>
+
+                    <dt class="col-sm-5">Type</dt>
+                    <dd class="col-sm-7">@Model.RoomTypeName</dd>
+
+                    <dt class="col-sm-5">Capacity</dt>
+                    <dd class="col-sm-7">@Model.RoomTypeCapacity</dd>
+
+                    <dt class="col-sm-5">Price / Night</dt>
+                    <dd class="col-sm-7">@Model.PricePerNight.ToString("C")</dd>
+
+                    <dt class="col-sm-5">Availability</dt>
+                    <dd class="col-sm-7">
+                        <span class="@badgeClass(Model.Availability)">@statusText(Model.Availability)</span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <h5 class="mb-2">Room Type Description</h5>
+                <p class="text-muted">@Model.RoomTypeDescription</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+
+    @* Show Book only when Available *@
+    @if (Model.Availability == Availability.Available)
+    {
+        <a asp-action="Book" asp-route-id="@Model.Id" class="btn btn-success">Book</a>
+    }
+
+    @* Admin-only tools (uncomment if you have these actions wired) *@
+    @if (isAdmin)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+    }
+</div>

@@ -1,5 +1,6 @@
 ﻿
-@using HotelRoomManager.Data.Models.Rooms 
+
+@using HotelRoomManager.Data.Models.Rooms   
 @using HotelRoomManager.Models.View_Models.RoomViewModels
 @using static HotelRoomManager.Emuns.Class
 @model IEnumerable<RoomListViewModel>
@@ -7,18 +8,27 @@
 @{
     ViewData["Title"] = "Rooms";
 
+
     Func<Availability, string> statusText = a => a == Availability.Available ? "Available" : "Not Available";
 
     Func<Availability, string> badgeClass = a => a == Availability.Available ? "badge bg-success" : "badge bg-danger";
+
+    bool isAdmin = User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin");
 }
 
 <h1 class="mb-3">@ViewData["Title"]</h1>
 
-<p>
-    <a asp-controller="Rooms" asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+@* Top-right toolbar: only Admins can create rooms *@
+@if (isAdmin)
+{
+    <p class="d-flex justify-content-end">
+        <a asp-controller="Rooms" asp-action="Create" class="btn btn-primary">
+            Create New
+        </a>
+    </p>
+}
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered align-middle">
     <thead>
         <tr>
             <th>Number</th>
@@ -26,7 +36,7 @@
             <th>Price / Night</th>
             <th>Room Type</th>
             <th>Availability</th>
-            <th></th>
+            <th style="width: 220px;">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +53,28 @@
                         <span class="@badgeClass(room.Availability)">@statusText(room.Availability)</span>
                     </td>
                     <td class="text-nowrap">
-                        <a asp-action="Details" asp-route-id="@room.Id">Details</a> |
-                        <a asp-action="Edit" asp-route-id="@room.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@room.Id">Delete</a>
+                        @* Always visible: Details *@
+                        <a asp-action="Details" asp-route-id="@room.Id" class="btn btn-outline-secondary btn-sm me-1">
+                            Details
+                        </a>
+
+                        @if (isAdmin)
+                        {
+                            @* ADMIN: can Edit/Delete *@
+                            <a asp-action="Edit" asp-route-id="@room.Id" class="btn btn-outline-primary btn-sm me-1">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@room.Id" class="btn btn-outline-danger btn-sm">
+                                Delete
+                            </a>
+                        }
+                        else
+                        {
+                            @* NON-ADMIN (guests/users): only Book (no Create/Edit/Delete) *@
+                            <a asp-action="Book" asp-route-id="@room.Id" class="btn btn-success btn-sm">
+                                Book
+                            </a>
+                        }
                     </td>
                 </tr>
             }

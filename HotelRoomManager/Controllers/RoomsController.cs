@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using HotelRoomManager.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using HotelRoomManager.Contracts;
+using System.Threading.Tasks;
 
 namespace HotelRoomManager.Controllers
 {
@@ -14,10 +15,20 @@ namespace HotelRoomManager.Controllers
             roomsService = _roomsService;
         }
 
-
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var model = await roomsService.GetAllAsync();
+            var result = await roomsService.GetAllAsync();
+            return View(result);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await roomsService.GetDetailsAsync(id);
+            if (model == null) return NotFound();
             return View(model);
         }
     }
