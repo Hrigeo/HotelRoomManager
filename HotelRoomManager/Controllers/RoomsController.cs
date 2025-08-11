@@ -1,12 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using HotelRoomManager.Contracts;
 
 namespace HotelRoomManager.Controllers
 {
     public class RoomsController : Controller
     {
-        public IActionResult Index()
+
+        private readonly IRoomsService roomsService;
+
+        public RoomsController(IRoomsService _roomsService)
         {
-            return View();
+            roomsService = _roomsService;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            var model = await roomsService.GetAllAsync();
+            return View(model);
         }
     }
 }

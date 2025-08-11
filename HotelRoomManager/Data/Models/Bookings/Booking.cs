@@ -1,11 +1,11 @@
-﻿using HotelRoomManager.Models.Finance;
-using HotelRoomManager.Models.Reviews;
-using HotelRoomManager.Models.Rooms;
-using HotelRoomManager.Models.User;
+﻿using HotelRoomManager.Data.Models.Finance;
+using HotelRoomManager.Data.Models.Reviews;
+using HotelRoomManager.Data.Models.Rooms;
+using HotelRoomManager.Data.Models.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelRoomManager.Models.Bookings
+namespace HotelRoomManager.Data.Models.Bookings
 {
     public class Booking
     {
@@ -29,9 +29,6 @@ namespace HotelRoomManager.Models.Bookings
         public string GuestId { get; set; } = null!;
 
         public ApplicationUser Guest { get; set; } = null!;
-
-        [MaxLength(1000)]
-        public string? Notes { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }

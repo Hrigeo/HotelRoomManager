@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using HotelRoomManager.Models.Bookings;
+using HotelRoomManager.Data.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
 
-namespace HotelRoomManager.Models.User
+namespace HotelRoomManager.Data.Models.User
 {
     public class ApplicationUser : IdentityUser
     {

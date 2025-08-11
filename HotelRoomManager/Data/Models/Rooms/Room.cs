@@ -1,10 +1,10 @@
-﻿using HotelRoomManager.Models.Bookings;
-using HotelRoomManager.Models.Reviews;
+﻿using HotelRoomManager.Data.Models.Bookings;
+using HotelRoomManager.Data.Models.Reviews;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static HotelRoomManager.Emuns.Class;
 
-namespace HotelRoomManager.Models.Rooms
+namespace HotelRoomManager.Data.Models.Rooms
 {
     public class Room
     {
@@ -14,10 +14,6 @@ namespace HotelRoomManager.Models.Rooms
         [Required]
         [MaxLength(10)]
         public string Number { get; set; } = null!;
-
-        [Required]
-        [Range(1, 10)]
-        public int Capacity { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -33,7 +29,6 @@ namespace HotelRoomManager.Models.Rooms
         [Required]
         public Availability Availability { get; set; }
 
-        [InverseProperty(nameof(Booking.Room))]
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
         [NotMapped]

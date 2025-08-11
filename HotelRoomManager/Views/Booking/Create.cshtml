@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model HotelRoomManager.Models.BookingCreateViewModel
 @{
+    ViewData["Title"] = "Create Booking";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+<form asp-controller="Booking" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <!-- Shows model-level errors (e.g., date rules from IValidatableObject) -->
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row g-3">
+
+        <!-- Room dropdown; items come from controller/service via Model.Rooms -->
+        <div class="col-md-4">
+            <label asp-for="RoomId" class="form-label"></label>
+            <select asp-for="RoomId" asp-items="Model.Rooms" class="form-select">
+                <option value="">-- select a room --</option>
+            </select>
+            <span asp-validation-for="RoomId" class="text-danger"></span>
+        </div>
+
+        <!-- Check-in date -->
+        <div class="col-md-4">
+            <label asp-for="CheckInDate" class="form-label"></label>
+            <input asp-for="CheckInDate" class="form-control" type="date" />
+            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+        </div>
+
+        <!-- Check-out date -->
+        <div class="col-md-4">
+            <label asp-for="CheckOutDate" class="form-label"></label>
+            <input asp-for="CheckOutDate" class="form-control" type="date" />
+            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+        </div>
+
+        <!-- Actions -->
+        <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Book now</button>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <!-- Client-side validation (jQuery + unobtrusive) -->
+    <partial name="_ValidationScriptsPartial" />
 }

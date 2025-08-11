@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HotelRoomManager.Models.Bookings;
+using HotelRoomManager.Data.Models.Bookings;
 
-namespace HotelRoomManager.Models.Finance
+namespace HotelRoomManager.Data.Models.Finance
 {
     public class Invoice
     {
@@ -23,10 +23,6 @@ namespace HotelRoomManager.Models.Finance
 
         [Required]
         public DateTime IssuedOn { get; set; } = DateTime.UtcNow;
-
-        [MaxLength(50)]
-        public string? PaymentMethod { get; set; }
-
         public bool IsPaid { get; set; } = false;
     }
 }

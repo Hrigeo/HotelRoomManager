@@ -1,7 +1,7 @@
-﻿using HotelRoomManager.Models.Bookings;
+﻿using HotelRoomManager.Data.Models.Bookings;
 using System.ComponentModel.DataAnnotations;
 
-namespace HotelRoomManager.Models.Reviews
+namespace HotelRoomManager.Data.Models.Reviews
 {
     public class RoomReview
     {
