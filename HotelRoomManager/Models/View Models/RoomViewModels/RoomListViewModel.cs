@@ -1,6 +1,4 @@
-﻿using static HotelRoomManager.Emuns.Class;
-
-namespace HotelRoomManager.Models.View_Models.RoomViewModels
+﻿namespace HotelRoomManager.Models.View_Models.RoomViewModels
 {
     public class RoomListViewModel
     {
@@ -9,7 +7,7 @@ namespace HotelRoomManager.Models.View_Models.RoomViewModels
             public int Capacity { get; set; }
             public decimal PricePerNight { get; set; }
             public string RoomTypeName { get; set; } = string.Empty;
-            public Availability Availability { get; set; }
+            public bool Availability { get; set; }
     }
 }
 

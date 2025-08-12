@@ -1,13 +1,12 @@
 ﻿@using HotelRoomManager.Models.ViewModels.Rooms
 @using HotelRoomManager.Data.Models.Rooms   
-@using static HotelRoomManager.Emuns.Class
 @model RoomDetailsViewModel
 
 @{
     ViewData["Title"] = $"Room {Model.Number}";
     // Human-friendly status text and badge color
-    Func<Availability, string> statusText = a => a == Availability.Available ? "Available" : "Not Available";
-    Func<Availability, string> badgeClass = a => a == Availability.Available ? "badge bg-success" : "badge bg-danger";
+    Func<bool, string> statusText = a => a == true ? "Available" : "Not Available";
+    Func<bool, string> badgeClass = a => a == true ? "badge bg-success" : "badge bg-danger";
 
     bool isAdmin = User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin");
 }
@@ -49,7 +48,7 @@
     <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
 
     @* Show Book only when Available *@
-    @if (Model.Availability == Availability.Available)
+    @if (Model.Availability == true)
     {
         <a asp-controller="Booking"
            asp-action="Create"

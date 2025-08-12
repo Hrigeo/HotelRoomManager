@@ -16,15 +16,11 @@ namespace HotelRoomManager.Services
 
         public BookingService(ApplicationDbContext context) => this.context = context;
 
-        /// <summary>
-        /// Create a booking ensuring: valid dates, room exists, and no overlap with existing bookings.
-        /// </summary>
         public async Task CreateBookingAsync(BookingCreateViewModel model)
         {
             if (string.IsNullOrWhiteSpace(model.GuestId))
                 throw new InvalidOperationException("You must be signed in to create a booking.");
 
-            // Ensure room exists and read its nightly price (no tracking needed)
             var room = await context.Rooms.AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Id == model.RoomId)
                 ?? throw new InvalidOperationException("Selected room does not exist.");

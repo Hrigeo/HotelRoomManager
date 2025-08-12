@@ -2,7 +2,6 @@
 using HotelRoomManager.Data.Models.Reviews;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static HotelRoomManager.Emuns.Class;
 
 namespace HotelRoomManager.Data.Models.Rooms
 {
@@ -27,7 +26,7 @@ namespace HotelRoomManager.Data.Models.Rooms
         public RoomType RoomType { get; set; } = null!;
 
         [Required]
-        public Availability Availability { get; set; }
+        public bool Availability { get; set; }
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 

@@ -5,7 +5,6 @@ using HotelRoomManager.Data.Models.Rooms;
 using HotelRoomManager.Data.Models.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static HotelRoomManager.Emuns.Class;
 
 namespace HotelRoomManager.Data
 {
@@ -52,12 +51,12 @@ namespace HotelRoomManager.Data
 
 
             modelBuilder.Entity<Room>().HasData(
-                new Room { Id = 1, Number = "101", PricePerNight = 89.00m, RoomTypeId = 1, Availability = Availability.Available },
-                new Room { Id = 2, Number = "102", PricePerNight = 119.00m, RoomTypeId = 1, Availability = Availability.Available },
-                new Room { Id = 3, Number = "201", PricePerNight = 149.00m, RoomTypeId = 2, Availability = Availability.Taken },
-                new Room { Id = 4, Number = "202", PricePerNight = 179.00m, RoomTypeId = 2, Availability = Availability.ForCleaning },
-                new Room { Id = 5, Number = "301", PricePerNight = 219.00m, RoomTypeId = 3, Availability = Availability.Available },
-                new Room { Id = 6, Number = "401", PricePerNight = 240.00m, RoomTypeId = 4, Availability = Availability.Available }
+                new Room { Id = 1, Number = "101", PricePerNight = 89.00m, RoomTypeId = 1, Availability = true },
+                new Room { Id = 2, Number = "102", PricePerNight = 119.00m, RoomTypeId = 1, Availability = true },
+                new Room { Id = 3, Number = "201", PricePerNight = 149.00m, RoomTypeId = 2, Availability = false },
+                new Room { Id = 4, Number = "202", PricePerNight = 179.00m, RoomTypeId = 2, Availability = false },
+                new Room { Id = 5, Number = "301", PricePerNight = 219.00m, RoomTypeId = 3, Availability = true },
+                new Room { Id = 6, Number = "401", PricePerNight = 240.00m, RoomTypeId = 4, Availability = true }
 );
 
             base.OnModelCreating(modelBuilder);
