@@ -2,13 +2,14 @@
 using HotelRoomManager.Data.Models.Finance;
 using HotelRoomManager.Data.Models.Reviews;
 using HotelRoomManager.Data.Models.Rooms;
+using HotelRoomManager.Data.Models.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static HotelRoomManager.Emuns.Class;
 
 namespace HotelRoomManager.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

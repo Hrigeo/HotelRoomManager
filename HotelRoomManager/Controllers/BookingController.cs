@@ -1,52 +1,73 @@
-﻿using HotelRoomManager.Data;
-using HotelRoomManager.Data.Models.Bookings;
+﻿using HotelRoomManager.Contracts;
 using HotelRoomManager.Data.Models.User;
+using HotelRoomManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelRoomManager.Controllers
 {
+    [Authorize]
     public class BookingController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IBookingService bookingService;
+        private readonly IRoomsService roomsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public BookingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public BookingController(
+            IBookingService bookingService,
+            IRoomsService roomsService,
+            UserManager<ApplicationUser> userManager)
         {
-            _context = context;
-            _userManager = userManager;
+            this.bookingService = bookingService;
+            this.roomsService = roomsService;
+            this.userManager = userManager;
         }
 
-        // STEP 2: GET method — shows the form
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? roomId)
         {
-            // Pass a dropdown list of rooms to the view
-            ViewBag.Rooms = new SelectList(_context.Rooms.ToList(), "Id", "Number");
-            return View();
+            var rooms = await roomsService.GetAllAsync();
+
+            var model = new BookingCreateViewModel
+            {
+                Rooms = rooms.Select(r => new SelectListItem
+                {
+                    Value = r.Id.ToString(),
+                    Text = r.Number
+                }),
+                RoomId = roomId ?? 0
+            };
+            
+            return View(model);
         }
 
-        // STEP 4: POST method — handles form submission
         [HttpPost]
-        public async Task<IActionResult> Create(Booking booking)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(BookingCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                // If validation fails, reload the room dropdown and return to view
-                ViewBag.Rooms = new SelectList(_context.Rooms.ToList(), "Id", "Number");
-                return View(booking);
+                var rooms = await roomsService.GetAllAsync();
+                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number });
+                return View(model);
             }
 
-            // Assign the current user as the guest
-            booking.GuestId = _userManager.GetUserId(User);
+            model.GuestId = userManager.GetUserId(User);
 
-            // Add the booking to the DB
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
-
-            // Redirect to a page (like MyBookings or Home)
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                await bookingService.CreateBookingAsync(model);
+                return RedirectToAction("Index", "Home");
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var rooms = await roomsService.GetAllAsync();
+                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number });
+                return View(model);
+            }
         }
     }
 }

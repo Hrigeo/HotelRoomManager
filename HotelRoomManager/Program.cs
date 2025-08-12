@@ -1,5 +1,6 @@
 using HotelRoomManager.Contracts;
 using HotelRoomManager.Data;
+using HotelRoomManager.Data.Models.User;
 using HotelRoomManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.Password.RequireDigit = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(
+    options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireLowercase = true;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IRoomsService, RoomsService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 

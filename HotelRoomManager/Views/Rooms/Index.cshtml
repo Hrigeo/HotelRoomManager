@@ -71,7 +71,10 @@
                         else
                         {
                             @* NON-ADMIN (guests/users): only Book (no Create/Edit/Delete) *@
-                            <a asp-action="Book" asp-route-id="@room.Id" class="btn btn-success btn-sm">
+                            <a asp-controller="Booking"
+                               asp-action="Create"
+                               asp-route-roomId="@room.Id"
+                               class="btn btn-sm btn-primary">
                                 Book
                             </a>
                         }

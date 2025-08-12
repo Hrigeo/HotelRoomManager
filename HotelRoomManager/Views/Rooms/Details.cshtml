@@ -1,14 +1,5 @@
-﻿@* ===================== Views/Rooms/Details.cshtml =====================
-   Purpose:
-     - Show a single room's full details to any visitor.
-     - Uses RoomDetailsViewModel, which already contains all data the view needs.
-   Notes:
-     - "Book" button is shown only when the room is Available (optional; keep or remove).
-     - Admin can still see Edit/Delete (optional; comment out if you only want the view now).
-*@
-
-@using HotelRoomManager.Models.ViewModels.Rooms
-@using HotelRoomManager.Data.Models.Rooms   @* for Availability enum *@
+﻿@using HotelRoomManager.Models.ViewModels.Rooms
+@using HotelRoomManager.Data.Models.Rooms   
 @using static HotelRoomManager.Emuns.Class
 @model RoomDetailsViewModel
 
@@ -60,7 +51,12 @@
     @* Show Book only when Available *@
     @if (Model.Availability == Availability.Available)
     {
-        <a asp-action="Book" asp-route-id="@Model.Id" class="btn btn-success">Book</a>
+        <a asp-controller="Booking"
+           asp-action="Create"
+           asp-route-roomId="@Model.Id"
+           class="btn btn-success">
+            Book
+        </a>
     }
 
     @* Admin-only tools (uncomment if you have these actions wired) *@
