@@ -2,14 +2,12 @@
 using HotelRoomManager.Data;
 using HotelRoomManager.Data.Models.Bookings;
 using HotelRoomManager.Models.ViewModels.RoomViewModels;
-using HotelRoomManager.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using HotelRoomManager.Models.ViewModels.BookingViewModel;
 
 namespace HotelRoomManager.Services
 {
-    /// <summary>
-    /// Business logic for creating bookings + reading room details used in the booking flow.
-    /// </summary>
+
     public class BookingService : IBookingService
     {
         private readonly ApplicationDbContext context;
@@ -54,9 +52,6 @@ namespace HotelRoomManager.Services
             await context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Optional helper if your booking flow shows room details.
-        /// </summary>
         public async Task<RoomDetailsViewModel?> GetDetailsAsync(int id) =>
             await context.Rooms
                 .Include(r => r.RoomType)
@@ -73,5 +68,24 @@ namespace HotelRoomManager.Services
                     RoomTypeDescription = r.RoomType != null ? r.RoomType.Description : string.Empty
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<BookingSimpleView>> GetMyBookingsAsync(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId)) return Enumerable.Empty<BookingSimpleView>();
+
+            return await context.Bookings
+                .AsNoTracking()
+                .Where(b => b.GuestId == userId)
+                .OrderByDescending(b => b.CheckInDate)
+                .Select(b => new BookingSimpleView
+                {
+                    BookingId = b.Id,
+                    RoomNumber = b.Room.Number,
+                    CheckInDate = b.CheckInDate,
+                    CheckOutDate = b.CheckOutDate,
+                    TotalPrice = b.TotalPrice
+                })
+                .ToListAsync();
+        }
     }
 }

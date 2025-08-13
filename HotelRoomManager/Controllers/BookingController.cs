@@ -1,6 +1,6 @@
 ﻿using HotelRoomManager.Contracts;
 using HotelRoomManager.Data.Models.User;
-using HotelRoomManager.Models.ViewModels;
+using HotelRoomManager.Models.ViewModels.BookingViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +23,14 @@ namespace HotelRoomManager.Controllers
             this.bookingService = bookingService;
             this.roomsService = roomsService;
             this.userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var userId = userManager.GetUserId(User)!;
+            var items = await bookingService.GetMyBookingsAsync(userId);
+            return View(items);
         }
 
         [HttpGet]
@@ -69,5 +77,7 @@ namespace HotelRoomManager.Controllers
                 return View(model);
             }
         }
+
+        
     }
 }

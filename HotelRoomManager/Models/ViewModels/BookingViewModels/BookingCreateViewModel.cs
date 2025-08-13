@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace HotelRoomManager.Models.ViewModels
+namespace HotelRoomManager.Models.ViewModels.BookingViewModel
 {
     public class BookingCreateViewModel : IValidatableObject
     {
