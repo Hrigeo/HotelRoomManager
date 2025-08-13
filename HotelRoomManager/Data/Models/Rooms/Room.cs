@@ -2,6 +2,7 @@
 using HotelRoomManager.Data.Models.Reviews;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static HotelRoomManager.Constants.DataConstants;
 
 namespace HotelRoomManager.Data.Models.Rooms
 {
@@ -12,11 +13,11 @@ namespace HotelRoomManager.Data.Models.Rooms
 
         [Required]
         [MaxLength(10)]
-        public string Number { get; set; } = null!;
+        public int Number { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        [Range(0, 10000)]
+        [Range(PriceMin, PriceMax)]
         public decimal PricePerNight { get; set; }
 
         [Required]

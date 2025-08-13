@@ -1,5 +1,6 @@
 ﻿using HotelRoomManager.Data.Models.Bookings;
 using System.ComponentModel.DataAnnotations;
+using static HotelRoomManager.Constants.DataConstants;
 
 namespace HotelRoomManager.Data.Models.Reviews
 {
@@ -12,10 +13,10 @@ namespace HotelRoomManager.Data.Models.Reviews
             public Booking Booking { get; set; } = null!;
 
             [Required]
-            [Range(1, 5)]
+            [Range(RatingMin, RatingMax)]
             public int Rating { get; set; }
 
-            [MaxLength(500)]
+            [MaxLength(DescriptionMaxLength)]
             public string? Comment { get; set; }
     }
 }

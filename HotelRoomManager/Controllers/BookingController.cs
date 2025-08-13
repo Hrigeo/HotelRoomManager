@@ -1,6 +1,6 @@
 ﻿using HotelRoomManager.Contracts;
 using HotelRoomManager.Data.Models.User;
-using HotelRoomManager.Models;
+using HotelRoomManager.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +35,7 @@ namespace HotelRoomManager.Controllers
                 Rooms = rooms.Select(r => new SelectListItem
                 {
                     Value = r.Id.ToString(),
-                    Text = r.Number
+                    Text = r.Number.ToString()
                 }),
                 RoomId = roomId ?? 0
             };
@@ -50,7 +50,7 @@ namespace HotelRoomManager.Controllers
             if (!ModelState.IsValid)
             {
                 var rooms = await roomsService.GetAllAsync();
-                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number });
+                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number.ToString() });
                 return View(model);
             }
 
@@ -65,7 +65,7 @@ namespace HotelRoomManager.Controllers
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 var rooms = await roomsService.GetAllAsync();
-                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number });
+                model.Rooms = rooms.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Number.ToString() });
                 return View(model);
             }
         }

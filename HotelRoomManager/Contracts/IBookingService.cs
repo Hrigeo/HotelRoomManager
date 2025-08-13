@@ -1,5 +1,5 @@
-﻿using HotelRoomManager.Models;
-using HotelRoomManager.Models.ViewModels.Rooms;
+﻿using HotelRoomManager.Models.ViewModels.RoomViewModels;
+using HotelRoomManager.Models.ViewModels;
 
 namespace HotelRoomManager.Contracts
 {

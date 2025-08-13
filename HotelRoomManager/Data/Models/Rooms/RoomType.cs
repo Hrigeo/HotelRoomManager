@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static HotelRoomManager.Constants.DataConstants;
 
 namespace HotelRoomManager.Data.Models.Rooms
 {
@@ -9,13 +10,13 @@ namespace HotelRoomManager.Data.Models.Rooms
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
 
-        [MaxLength(200)]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        [Range(1, 10)]
+        [Range(CapacityMin, CapacityMax)]
         [Required]
         public int Capacity { get; set; }
 

@@ -4,6 +4,7 @@ using HotelRoomManager.Data.Models.User;
 using HotelRoomManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using HotelRoomManager.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +19,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
     options =>
     {
         options.Password.RequireDigit = true;
-        options.Password.RequiredLength = 6;
-        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 
 
 builder.Services.AddControllersWithViews();

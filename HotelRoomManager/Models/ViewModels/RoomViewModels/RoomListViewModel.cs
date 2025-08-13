@@ -1,9 +1,9 @@
-﻿namespace HotelRoomManager.Models.View_Models.RoomViewModels
+﻿namespace HotelRoomManager.Models.ViewModels.RoomViewModels
 {
     public class RoomListViewModel
     {
             public int Id { get; set; }
-            public string Number { get; set; } = string.Empty;
+            public int Number { get; set; }
             public int Capacity { get; set; }
             public decimal PricePerNight { get; set; }
             public string RoomTypeName { get; set; } = string.Empty;

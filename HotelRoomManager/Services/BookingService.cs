@@ -1,8 +1,8 @@
 ﻿using HotelRoomManager.Contracts;
 using HotelRoomManager.Data;
 using HotelRoomManager.Data.Models.Bookings;
-using HotelRoomManager.Models;
-using HotelRoomManager.Models.ViewModels.Rooms;
+using HotelRoomManager.Models.ViewModels.RoomViewModels;
+using HotelRoomManager.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelRoomManager.Services
