@@ -28,6 +28,8 @@ namespace HotelRoomManager.Infrastructure
                 }
             }
 
+
+
             // 2) Add existing user (from appsettings) to the role
             var email = config["Seed:Admin:Email"];   // e.g., "g.achkov@yahoo.com"
             if (string.IsNullOrWhiteSpace(email))
@@ -56,6 +58,7 @@ namespace HotelRoomManager.Infrastructure
             {
                 logger.LogInformation("User {Email} already in {Role}.", email, AdminRole);
             }
+
         }
     }
 }

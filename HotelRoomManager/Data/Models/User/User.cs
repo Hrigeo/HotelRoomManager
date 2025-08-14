@@ -7,8 +7,9 @@ namespace HotelRoomManager.Data.Models.User
 {
     public class ApplicationUser : IdentityUser
     {
+        [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        public string? FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
