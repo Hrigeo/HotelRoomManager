@@ -4,6 +4,7 @@ using HotelRoomManager.Data.Models.Bookings;
 using HotelRoomManager.Models.ViewModels.RoomViewModels;
 using Microsoft.EntityFrameworkCore;
 using HotelRoomManager.Models.ViewModels.BookingViewModel;
+using HotelRoomManager.Models.ViewModels.BookingViewModels;
 
 namespace HotelRoomManager.Services
 {
@@ -28,7 +29,6 @@ namespace HotelRoomManager.Services
             if (checkOut <= checkIn)
                 throw new InvalidOperationException("Check-out must be after check-in.");
 
-            // Overlap rule: (startA < endB) && (endA > startB)
             var overlaps = await context.Bookings.AnyAsync(b =>
                 b.RoomId == model.RoomId &&
                 checkIn < b.CheckOutDate && checkOut > b.CheckInDate);
@@ -52,6 +52,36 @@ namespace HotelRoomManager.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<BookingSimpleViewModel>> GetAllAsync()
+        {
+            // Adjust mappings if your entity property names differ:
+            // b.Room.Number, b.Room.RoomType.Name, b.User.Email, b.CreatedOn
+            var items = await context.Bookings
+                .AsNoTracking()
+                .Select(b => new BookingSimpleViewModel
+                {
+                    BookingId = b.Id,
+                    RoomNumber = b.Room.Number,
+                    UserEmail = b.Guest.Email,
+                    CheckInDate = b.CheckInDate,
+                    CheckOutDate = b.CheckOutDate,
+                })
+                .OrderByDescending(x => x.CheckInDate)
+                .ToListAsync();
+
+            return items;
+        }
+
+        // ===== ADMIN: hard delete booking =====
+        public async Task DeleteAsync(int bookingId)
+        {
+            var entity = await context.Bookings.FindAsync(bookingId);
+            if (entity == null) return; // idempotent
+
+            context.Bookings.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+
         public async Task<RoomDetailsViewModel?> GetDetailsAsync(int id) =>
             await context.Rooms
                 .Include(r => r.RoomType)
@@ -69,15 +99,15 @@ namespace HotelRoomManager.Services
                 })
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<BookingSimpleView>> GetMyBookingsAsync(string userId)
+        public async Task<IEnumerable<BookingSimpleViewModel>> GetMyBookingsAsync(string userId)
         {
-            if (string.IsNullOrWhiteSpace(userId)) return Enumerable.Empty<BookingSimpleView>();
+            if (string.IsNullOrWhiteSpace(userId)) return Enumerable.Empty<BookingSimpleViewModel>();
 
             return await context.Bookings
                 .AsNoTracking()
                 .Where(b => b.GuestId == userId)
-                .OrderByDescending(b => b.CheckInDate)
-                .Select(b => new BookingSimpleView
+                .OrderBy(b => b.CheckInDate)
+                .Select(b => new BookingSimpleViewModel
                 {
                     BookingId = b.Id,
                     RoomNumber = b.Room.Number,

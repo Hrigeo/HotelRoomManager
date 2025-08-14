@@ -8,7 +8,7 @@ namespace HotelRoomManager.Contracts
         Task<IEnumerable<RoomTypeViewModel>> GetAllAsync();
         Task<RoomTypeViewModel?> GetByIdAsync(int id);
         Task CreateAsync(RoomTypeCreateViewModel model);
-        Task UpdateAsync(RoomTypeUpdateViewModel model);
+        Task UpdateAsync(RoomTypeViewModel model);
         Task DeleteAsync(int id);
         Task<IEnumerable<SelectListItem>> GetSelectListAsync(int? selectedId = null);
     }

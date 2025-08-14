@@ -5,6 +5,7 @@ using HotelRoomManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HotelRoomManager.Constants;
+using HotelRoomManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
         options.Password.RequireDigit = true;
         options.Password.RequireNonAlphanumeric = true;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IRoomsService, RoomsService>();
@@ -57,5 +59,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+await app.CreateAdminAsync();
 
 app.Run();

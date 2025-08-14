@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HotelRoomManager.Models.ViewModels.BookingViewModel
+namespace HotelRoomManager.Models.ViewModels.BookingViewModels
 {
-    public class BookingSimpleView
+    public class BookingSimpleViewModel
     {
         public int BookingId { get; set; }
 
@@ -17,6 +17,8 @@ namespace HotelRoomManager.Models.ViewModels.BookingViewModel
 
         [Display(Name = "Total")]
         public decimal TotalPrice { get; set; }
+
+        public string? UserEmail { get; set; }  // used in Admin view
     }
 }
 

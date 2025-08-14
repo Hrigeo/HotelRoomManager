@@ -4,7 +4,6 @@
 
 @{
     ViewData["Title"] = $"Room {Model.Number}";
-    // Human-friendly status text and badge color
     Func<bool, string> statusText = a => a == true ? "Available" : "Not Available";
     Func<bool, string> badgeClass = a => a == true ? "badge bg-success" : "badge bg-danger";
 

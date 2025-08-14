@@ -67,7 +67,7 @@ namespace HotelRoomManager.Controllers
             try
             {
                 await bookingService.CreateBookingAsync(model);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Booking");
             }
             catch (InvalidOperationException ex)
             {
@@ -78,6 +78,32 @@ namespace HotelRoomManager.Controllers
             }
         }
 
-        
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> All()
+        {
+            var model = await bookingService.GetAllAsync();
+            return View(model);
+        }
+
+        // ===== ADMIN: Delete booking =====
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await bookingService.DeleteAsync(id);
+                TempData["Success"] = $"Reservation #{id} deleted.";
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to delete reservation.";
+            }
+            return RedirectToAction(nameof(All));
+        }
+
+
     }
 }

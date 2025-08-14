@@ -35,6 +35,7 @@ namespace HotelRoomManager.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await roomsService.DeleteRoomAsync(id);
@@ -43,6 +44,7 @@ namespace HotelRoomManager.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var vm = new RoomCreateViewModel
@@ -56,6 +58,7 @@ namespace HotelRoomManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(RoomCreateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -79,6 +82,7 @@ namespace HotelRoomManager.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var vm = await roomsService.GetByIdAsync(id);
@@ -90,6 +94,7 @@ namespace HotelRoomManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(RoomEditViewModel model)
         {
             if (!ModelState.IsValid)
