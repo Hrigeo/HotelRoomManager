@@ -125,5 +125,51 @@ namespace HotelRoomManager.Services
 
             await context.SaveChangesAsync();
         }
+
+        public async Task<RoomsFilterViewModel> GetPagedAsync(RoomsFilterInput input)
+        {
+            var page = input.Page <= 0 ? 1 : input.Page;
+            var pageSize = input.PageSize <= 0 ? 10 : input.PageSize;
+
+            var query = context.Rooms
+                .AsNoTracking()
+                .Include(r => r.RoomType)
+                .AsQueryable();
+
+            if (input.RoomTypeId.HasValue)
+                query = query.Where(r => r.RoomTypeId == input.RoomTypeId.Value);
+
+            if (input.MinCapacity.HasValue)
+                query = query.Where(r => r.RoomType.Capacity >= input.MinCapacity.Value);
+            // ^ If your Room has Capacity itself, change to r.Capacity
+
+            var total = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(r => r.Number)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(r => new RoomsFilterItemViewModel
+                {
+                    Id = r.Id,
+                    Number = r.Number,
+                    RoomType = r.RoomType.Name,
+                    Capacity = r.RoomType.Capacity,
+                    PricePerNight = r.PricePerNight,
+                    RoomTypeName = r.RoomType.Name,
+                    Availability = r.Availability
+                })
+                .ToListAsync();
+
+            return new RoomsFilterViewModel
+            {
+                Items = items,
+                RoomTypeId = input.RoomTypeId,
+                MinCapacity = input.MinCapacity,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = total
+            };
+        }
     }
 }

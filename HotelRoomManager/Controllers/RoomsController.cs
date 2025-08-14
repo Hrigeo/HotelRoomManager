@@ -1,4 +1,5 @@
 ﻿using HotelRoomManager.Contracts;
+using HotelRoomManager.Data.Models.Rooms;
 using HotelRoomManager.Models.ViewModels.RoomTypeViewModels;
 using HotelRoomManager.Models.ViewModels.RoomViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +20,11 @@ namespace HotelRoomManager.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] RoomsFilterInput filter)
         {
-            var result = await roomsService.GetAllAsync();
-            return View(result);
+            var model = await roomsService.GetPagedAsync(filter);
+            ViewBag.RoomTypes = await roomTypeService.GetSelectListAsync(filter.RoomTypeId);
+            return View(model);
         }
 
         [HttpGet]

@@ -14,5 +14,7 @@ namespace HotelRoomManager.Contracts
         Task<RoomEditViewModel?> GetByIdAsync(int id);
 
         Task UpdateAsync(RoomEditViewModel model);
+
+        Task<RoomsFilterViewModel> GetPagedAsync(RoomsFilterInput input);
     }
 }
