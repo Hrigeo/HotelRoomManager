@@ -45,3 +45,19 @@
         @booking?.CheckInDate.ToString("yyyy-MM-dd") – @booking?.CheckOutDate.ToString("yyyy-MM-dd")
     </dd>
 </dl>
+
+<div class="mb-3">
+    <form asp-action="SetPaid" asp-route-id="@Model.Id" asp-route-isPaid="true" method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-success me-2" @(Model.IsPaid ? "disabled" : null)>
+            Mark Paid
+        </button>
+    </form>
+
+    <form asp-action="SetPaid" asp-route-id="@Model.Id" asp-route-isPaid="false" method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-warning text-dark" @(!Model.IsPaid ? "disabled" : null)>
+            Mark Unpaid
+        </button>
+    </form>
+</div>

@@ -56,7 +56,28 @@ namespace HotelRoomManager.Controllers
         {
             await invoices.DeleteAsync(id);
             TempData["Success"] = $"Invoice #{id} deleted.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetPaid(int id, bool isPaid)
+        {
+            try
+            {
+                await invoices.SetPaidAsync(id, isPaid);
+                TempData["Success"] = $"Invoice #{id} marked as {(isPaid ? "Paid" : "Unpaid")}.";
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                TempData["Error"] = "Failed to update invoice payment status.";
+            }
+
+            return RedirectToAction("Details", new { id });
         }
     }
 }

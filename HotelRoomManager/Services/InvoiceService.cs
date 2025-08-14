@@ -73,5 +73,15 @@ namespace HotelRoomManager.Services
             context.Invoices.Remove(entity);
             await context.SaveChangesAsync();
         }
+
+        public async Task SetPaidAsync(int id, bool isPaid)
+        {
+            var inv = await context.Invoices.FindAsync(id);
+            if (inv == null) throw new KeyNotFoundException("Invoice not found.");
+
+            inv.IsPaid = isPaid;
+
+            await context.SaveChangesAsync();
+        }
     }
 }

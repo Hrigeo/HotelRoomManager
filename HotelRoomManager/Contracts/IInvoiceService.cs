@@ -11,5 +11,7 @@ namespace HotelRoomManager.Contracts
         Task<Invoice?> GetByIdAsync(int id);
         Task DeleteAsync(int id);
 
+        Task SetPaidAsync(int id, bool isPaid);
+
     }
 }
