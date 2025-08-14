@@ -28,6 +28,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 
 builder.Services.AddControllersWithViews();

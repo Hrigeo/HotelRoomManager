@@ -3,8 +3,6 @@
     ViewData["Title"] = "All Bookings";
 }
 
-<h2 class="mb-3">@ViewData["Title"]</h2>
-
 @if (TempData["Success"] is string s)
 {
     <div class="alert alert-success">@s</div>
@@ -13,6 +11,13 @@
 {
     <div class="alert alert-danger">@e</div>
 }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">All Bookings</h2>
+    <a asp-controller="Invoice" asp-action="Index" class="btn btn-outline-primary">
+        Invoices
+    </a>
+</div>
 
 <table class="table table-striped table-bordered align-middle">
     <thead>
@@ -41,6 +46,28 @@
                         <input type="hidden" name="id" value="@b.BookingId" />
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    @if (!b.HasInvoice)
+                    {
+                        <form asp-controller="Invoice"
+                              asp-action="Issue"
+                              method="post"
+                              class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="bookingId" value="@b.BookingId" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                Issue Invoice
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Invoice"
+                           asp-action="Details"
+                           asp-route-id="@b.InvoiceId"
+                           class="btn btn-sm btn-outline-secondary">
+                            View Invoice
+                        </a>
+                    }
                 </td>
             </tr>
         }

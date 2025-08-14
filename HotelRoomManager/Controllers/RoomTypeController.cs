@@ -40,7 +40,7 @@ namespace HotelRoomManager.Controllers
                 TempData["Success"] = "Room type created.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (InvalidOperationException ex) // e.g., duplicate name
+            catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);

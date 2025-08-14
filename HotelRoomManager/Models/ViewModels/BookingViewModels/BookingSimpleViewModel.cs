@@ -18,7 +18,10 @@ namespace HotelRoomManager.Models.ViewModels.BookingViewModels
         [Display(Name = "Total")]
         public decimal TotalPrice { get; set; }
 
-        public string? UserEmail { get; set; }  // used in Admin view
+        public string? UserEmail { get; set; }
+
+        public int? InvoiceId { get; set; }           // null if none
+        public bool HasInvoice => InvoiceId.HasValue; // convenience for the view
     }
 }
 

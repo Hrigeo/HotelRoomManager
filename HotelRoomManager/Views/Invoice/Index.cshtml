@@ -1,0 +1,53 @@
+﻿@using HotelRoomManager.Data.Models
+@using HotelRoomManager.Data.Models.Finance
+@model IEnumerable<Invoice>
+
+@{
+    ViewData["Title"] = "Invoices";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+@if (TempData["Success"] is string s)
+{
+    <div class="alert alert-success">@s</div>
+}
+@if (TempData["Error"] is string e)
+{
+    <div class="alert alert-danger">@e</div>
+}
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Booking</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Created On</th>
+            <th style="width:180px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inv in Model)
+        {
+            <tr>
+                <td>@inv.Id</td>
+                <td>@inv.BookingId</td>
+                <td>$@inv.Amount</td>
+                <td>@(inv.IsPaid? "Yes":"No")</td>
+                <td>@inv.IssuedOn</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@inv.Id" class="btn btn-sm btn-outline-secondary me-2">
+                        Details
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@inv.Id" method="post" class="d-inline"
+                          onsubmit='return confirm("Delete invoice #@inv.Id?");'>
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

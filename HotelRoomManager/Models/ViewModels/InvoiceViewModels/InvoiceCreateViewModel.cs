@@ -1,25 +1,17 @@
-﻿using System;
+﻿using HotelRoomManager.Data.Models.Bookings;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HotelRoomManager.Data.Models.Bookings;
-using static HotelRoomManager.Constants.DataConstants;
 
-namespace HotelRoomManager.Data.Models.Finance
+namespace HotelRoomManager.Models.ViewModels.InvoiceViewModels
 {
-    public class Invoice
+    public class InvoiceCreateViewModel
     {
-        [Key]
-        public int Id { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Booking))]
         public int BookingId { get; set; }
-
-        public Booking Booking { get; set; } = null!;
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        [Range(PriceMin, PriceMax)]
         public decimal Amount { get; set; }
 
         [Required]

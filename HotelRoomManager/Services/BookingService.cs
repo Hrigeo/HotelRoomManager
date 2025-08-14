@@ -13,7 +13,11 @@ namespace HotelRoomManager.Services
     {
         private readonly ApplicationDbContext context;
 
-        public BookingService(ApplicationDbContext context) => this.context = context;
+        public BookingService(ApplicationDbContext _context)
+        {
+            context = _context;
+        }
+
 
         public async Task CreateBookingAsync(BookingCreateViewModel model)
         {
@@ -65,6 +69,11 @@ namespace HotelRoomManager.Services
                     UserEmail = b.Guest.Email,
                     CheckInDate = b.CheckInDate,
                     CheckOutDate = b.CheckOutDate,
+
+                    InvoiceId = context.Invoices
+                        .Where(i => i.BookingId == b.Id)
+                        .Select(i => (int?)i.Id)
+                        .FirstOrDefault(),
                 })
                 .OrderByDescending(x => x.CheckInDate)
                 .ToListAsync();
@@ -72,7 +81,6 @@ namespace HotelRoomManager.Services
             return items;
         }
 
-        // ===== ADMIN: hard delete booking =====
         public async Task DeleteAsync(int bookingId)
         {
             var entity = await context.Bookings.FindAsync(bookingId);

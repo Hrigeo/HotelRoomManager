@@ -1,0 +1,47 @@
+﻿@using HotelRoomManager.Data.Models
+@using HotelRoomManager.Data.Models.Finance
+@model Invoice
+
+@{
+    ViewData["Title"] = $"Invoice #{Model.Id}";
+    var booking = Model.Booking;
+    var room = booking?.Room;
+    var roomType = room?.RoomType;
+    var user = booking?.Guest;
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-secondary">Back to Invoices</a>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Invoice Id</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Booking Id</dt>
+    <dd class="col-sm-9">@Model.BookingId</dd>
+
+    <dt class="col-sm-3">Paid</dt>
+    <dd class="col-sm-9">@(Model.IsPaid ? "Yes" : "No")</dd>
+
+     <dt class="col-sm-3">Created On</dt>
+       <dd class="col-sm-9">@Model.IssuedOn.ToString("yyyy-MM-dd HH:mm")</dd>
+
+       <dt class="col-sm-3">Amount</dt>
+       <dd class="col-sm-9">$@Model.Amount</dd>
+
+    <dt class="col-sm-3">Guest</dt>
+    <dd class="col-sm-9">@user?.FullName</dd>
+
+    <dt class="col-sm-3">Room</dt>
+    <dd class="col-sm-9">
+        @room?.Number @(" ") (@roomType?.Name)
+    </dd>
+
+    <dt class="col-sm-3">Stay</dt>
+    <dd class="col-sm-9">
+        @booking?.CheckInDate.ToString("yyyy-MM-dd") – @booking?.CheckOutDate.ToString("yyyy-MM-dd")
+    </dd>
+</dl>
