@@ -1,4 +1,5 @@
-﻿using HotelRoomManager.Data.Models.Bookings;
+﻿using HotelRoomManager.Data.Models;
+using HotelRoomManager.Data.Models.Bookings;
 using HotelRoomManager.Data.Models.Finance;
 using HotelRoomManager.Data.Models.Reviews;
 using HotelRoomManager.Data.Models.Rooms;
@@ -67,5 +68,6 @@ namespace HotelRoomManager.Data
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<RoomReview> RoomReviews { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; } = null!;
     }
 }

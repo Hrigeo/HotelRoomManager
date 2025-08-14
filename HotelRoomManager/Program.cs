@@ -29,6 +29,7 @@ builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 
 builder.Services.AddControllersWithViews();

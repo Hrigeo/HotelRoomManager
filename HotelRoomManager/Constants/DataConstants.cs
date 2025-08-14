@@ -23,5 +23,7 @@
             public const int RatingMin = 1;
             public const int RatingMax = 5;
 
+            public const int SubjectMaxLength = 200;
+
     }
 }

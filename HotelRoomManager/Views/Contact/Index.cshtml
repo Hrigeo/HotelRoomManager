@@ -1,0 +1,63 @@
+﻿@using HotelRoomManager.Models.ViewModels.ContactViewModels
+@model IEnumerable<ContactListItemViewModel>
+@{
+    ViewData["Title"] = "Contact Messages";
+}
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+@if (TempData["Success"] is string s)
+{
+    <div class="alert alert-success">@s</div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a asp-action="Index" asp-route-open="true" class="btn btn-sm btn-outline-secondary me-2">Open</a>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">All</a>
+    </div>
+</div>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>From</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Received</th>
+            <th>Status</th>
+            <th style="width:220px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Name</td>
+                <td>@m.Email</td>
+                <td>@m.Subject</td>
+                <td>@m.CreatedOn.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    <span class="badge @(m.IsHandled ? "bg-success" : "bg-warning text-dark")">
+                        @(m.IsHandled ? "Handled" : "Open")
+                    </span>
+                </td>
+                <td>
+                    <form asp-action="SetHandled" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@m.Id" />
+                        <input type="hidden" name="handled" value="@(!m.IsHandled)" />
+                        <button type="submit" class="btn btn-sm @(m.IsHandled ? "btn-warning text-dark" : "btn-success")">
+                            @(m.IsHandled ? "Mark Open" : "Mark Handled")
+                        </button>
+                    </form>
+
+                    <form asp-action="Delete" asp-route-id="@m.Id" method="post" class="d-inline"
+                          onsubmit='return confirm("Delete this message from @m.Email?");'>
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger ms-2">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
