@@ -53,7 +53,7 @@ namespace HotelRoomManager.Services
         public async Task SetHandledAsync(int id, bool handled)
         {
             var entity = await context.ContactMessages.FindAsync(id);
-            if (entity == null) return; // idempotent
+            if (entity == null) return;            // idempotent
             entity.IsHandled = handled;
             await context.SaveChangesAsync();
         }

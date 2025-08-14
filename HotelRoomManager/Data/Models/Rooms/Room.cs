@@ -1,5 +1,4 @@
 ﻿using HotelRoomManager.Data.Models.Bookings;
-using HotelRoomManager.Data.Models.Reviews;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static HotelRoomManager.Constants.DataConstants;
@@ -31,8 +30,6 @@ namespace HotelRoomManager.Data.Models.Rooms
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-        [NotMapped]
-        public IEnumerable<RoomReview> Reviews =>
-            Bookings.Where(b => b.Review != null).Select(b => b.Review!);
+
     }
 }

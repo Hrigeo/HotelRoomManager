@@ -42,11 +42,15 @@
                     </span>
                 </td>
                 <td>
-                    <form asp-action="SetHandled" method="post" class="d-inline">
+                    <form asp-controller="Contact"
+                          asp-action="SetHandled"
+                          asp-route-id="@m.Id"
+                          asp-route-handled="@(!m.IsHandled)"
+                          method="post"
+                          class="d-inline">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@m.Id" />
-                        <input type="hidden" name="handled" value="@(!m.IsHandled)" />
-                        <button type="submit" class="btn btn-sm @(m.IsHandled ? "btn-warning text-dark" : "btn-success")">
+                        <button type="submit"
+                                class="btn btn-sm @(m.IsHandled ? "btn-warning text-dark" : "btn-success")">
                             @(m.IsHandled ? "Mark Open" : "Mark Handled")
                         </button>
                     </form>

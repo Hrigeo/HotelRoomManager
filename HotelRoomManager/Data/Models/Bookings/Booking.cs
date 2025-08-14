@@ -1,5 +1,4 @@
 ﻿using HotelRoomManager.Data.Models.Finance;
-using HotelRoomManager.Data.Models.Reviews;
 using HotelRoomManager.Data.Models.Rooms;
 using HotelRoomManager.Data.Models.User;
 using System.ComponentModel.DataAnnotations;
@@ -32,8 +31,6 @@ namespace HotelRoomManager.Data.Models.Bookings
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
-
-        public RoomReview? Review { get; set; }
 
         public Invoice? Invoice { get; set; }
     }
